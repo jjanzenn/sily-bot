@@ -77,6 +77,7 @@ app.post('/', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, 
           const id = options[0].value;
           const content = id in jobs ? `stopped job ${id}` : `no such job ${id}`;
           if (id in jobs) {
+              job_crons[id].stop();
               delete jobs[id]
               delete job_crons[id];
 
