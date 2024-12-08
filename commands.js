@@ -4,6 +4,13 @@ import { REST, Routes } from 'discord.js';
 
 const commands = [
     {
+        name: 'pet',
+        description: 'pet sily bot',
+        type: 1,
+        integration_types: [0],
+        contexts: [0],
+    },
+    {
         name: 'schedule_message',
         description: 'Register a message to run as a cron job',
         type: 1,

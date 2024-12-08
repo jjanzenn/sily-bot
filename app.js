@@ -95,6 +95,13 @@ app.post('/', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, 
                   content: content,
               },
           });
+      } else if (name === 'pet') {
+          return res.send({
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: {
+                  content: '[purring noises]',
+              },
+          });
       }
 
     console.error(`unknown command: ${name}`);
