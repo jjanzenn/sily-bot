@@ -65,11 +65,7 @@ app.post('/', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, 
                       console.error(err);
                   }
               });
-
-              cron.schedule(crontab, () => {
-                  client.channels.cache.get(req.body.channel_id).send(message)
-              });
-          }
+           }
 
           return res.send({
               type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
