@@ -1,35 +1,54 @@
 import 'dotenv/config';
-import {InstallGlobalCommands} from './utils.js';
 
-const SCHEDULE_MESSAGE = {
-    name: 'schedule_message',
-    description: 'Register a message to be sent at a specific time',
-    type: 1,
-    options: [
-        {
-            type: 3,
-            name: 'message',
-            description: 'the message to send',
-            required: true,
-        },
-        {
-            type: 3,
-            name: 'crontab_string',
-            description: 'the time the message should be sent at in crontab format',
-            required: true,
-        },
-        {
-            type: 4,
-            name: 'repeat',
-            description: 'how many times should the message be repeated? (0 is infinite and the default)',
-            required: false,
-            min_value: 0,
-        },
-    ],
-    integration_types: [0, 1],
-    contexts: [0, 1, 2],
-};
+import { REST, Routes } from 'discord.js';
 
-const ALL_COMMANDS = [SCHEDULE_MESSAGE];
+const commands = [
+    {
+        name: 'schedule_message',
+        description: 'Register a message to run as a cron job',
+        type: 1,
+        options: [
+            {
+                type: 3,
+                name: 'message',
+                description: 'the message to send',
+                required: true,
+            },
+            {
+                type: 3,
+                name: 'crontab',
+                description: 'the schedule for the message',
+                required: true,
+            },
+        ],
+        integration_types: [0],
+        contexts: [0],
+    },
+    {
+        name: 'unschedule_message',
+        description: 'Stop sending a scheduled message',
+        type: 1,
+        options: [
+            {
+                type: 3,
+                name: 'id',
+                description: 'the id of the message to stop',
+                required: true,
+            },
+        ],
+        integration_types: [0],
+        contexts: [0],
+    },
+];
 
-InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+
+try {
+    console.log('Started refreshing application commands.');
+
+    await rest.put(Routes.applicationCommands(process.env.APP_ID), { body: commands });
+
+    console.log('Successfully reloaded application commands.');
+} catch (error) {
+    console.error(error);
+}

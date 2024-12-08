@@ -6,44 +6,89 @@ import {
   InteractionResponseType,
   verifyKeyMiddleware,
 } from 'discord-interactions';
+import { Client, GatewayIntentBits } from 'discord.js';
+import fs from 'node:fs';
+import { v4 as uuidv4 } from 'uuid';
 
-// Create an express app
+const client = new Client ({ intents: [GatewayIntentBits.Guilds] });
+var jobs = {};
+const job_crons = {};
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+    fs.readFile('jobs.json', 'utf8', (err,data) => {
+        jobs = err ? {} : JSON.parse(data);
+
+        Object.keys(jobs).forEach((job) => {
+            job_crons[job] = cron.schedule(jobs[job].crontab, () => {
+                client.channels.cache.get(jobs[job].channel_id).send(jobs[job].message);
+            });
+        });
+    });
+});
+
+client.login(process.env.DISCORD_TOKEN);
+
 const app = express();
-// Get port, or default to 3000
 const PORT = process.env.PORT || 3000;
 
-/**
- * Interactions endpoint URL where Discord will send HTTP requests
- * Parse request body and verifies incoming requests using discord-interactions package
- */
 app.post('/', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
-  // Interaction type and data
   const { type, data } = req.body;
 
-  /**
-   * Handle verification requests
-   */
   if (type === InteractionType.PING) {
     return res.send({ type: InteractionResponseType.PONG });
   }
 
-  /**
-   * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
-   */
   if (type === InteractionType.APPLICATION_COMMAND) {
-      const { name, options } = data;
+      const { name, options, guild_id } = data;
 
       if (name === 'schedule_message') {
           const message = options[0].value;
           const crontab = options[1].value;
           const valid = cron.validate(crontab);
+          const id = uuidv4();
 
-          const content = valid ? 'registered message "' + message + '" with cron "' + crontab + '"' : 'invalid cron';
+          const content = valid ? `registered message: "${message}" with cron: "${crontab}" and id: "${id}"` : 'invalid cron';
 
           if (valid) {
+              jobs[id] = {
+                  message: message,
+                  crontab: crontab,
+                  channel_id: req.body.channel_id,
+              };
+              job_crons[id] = cron.schedule(crontab, () => {
+                  client.channels.cache.get(req.body.channel_id).send(message);
+              });
+
+              const json = JSON.stringify(jobs);
+              fs.writeFile('jobs.json', json, 'utf8', err => {
+                  if (err) {
+                      console.error(err);
+                  }
+              });
+
               cron.schedule(crontab, () => {
-                  console.log(message);
+                  client.channels.cache.get(req.body.channel_id).send(message)
+              });
+          }
+
+          return res.send({
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: {
+                  content: content,
+              },
+          });
+      } else if (name === 'unschedule_message') {
+          const id = options[0].value;
+          const content = id in jobs ? `stopped job ${id}` : `no such job ${id}`;
+          if (id in jobs) {
+              delete jobs[id]
+              delete job_crons[id];
+
+              const json = JSON.stringify(jobs);
+              fs.writeFile('jobs.json', json, 'utf8', err => {
+                  if (err) {
+                      console.error(err);
+                  }
               });
           }
 
