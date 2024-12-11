@@ -10,15 +10,15 @@ function send(state, content) {
     });
 }
 
-export function schedule_message(state, message, channel, crontab) {
-    const message = Message(message, channel, crontab);
+export function schedule_message(state, msg, channel, crontab) {
+    const message = Message(msg, channel, crontab);
 
     const schedule_valid = state.schedule.schedule(message);
 
     return send(
         state,
         schedule_valid
-            ? `registered message: "${message}" with cron: "${crontab}" and id: "${message.id}"`
+            ? `registered message: "${msg}" with cron: "${crontab}" and id: "${message.id}"`
             : "invalid cron",
     );
 }
