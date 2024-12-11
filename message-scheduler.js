@@ -30,7 +30,7 @@ export class MessageSchedule {
                     : true;
                 this.jobs[job].id = job;
 
-                this.schedule(state.client, this.jobs[job], repeat);
+                this.schedule(this.jobs[job]);
             });
         });
     }
@@ -63,6 +63,7 @@ export class MessageSchedule {
                     timezone: process.env.TIMEZONE,
                 },
             );
+            this.crons[message.id] = "test";
 
             this.save();
         }
