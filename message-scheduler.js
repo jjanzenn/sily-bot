@@ -30,7 +30,7 @@ export class MessageSchedule {
                     : true;
                 this.jobs[job].id = job;
 
-                schedule(state.client, this.jobs[job], repeat);
+                this.schedule(state.client, this.jobs[job], repeat);
             });
         });
     }
