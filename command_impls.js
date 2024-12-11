@@ -1,0 +1,37 @@
+import { InteractionResponseType } from "discord-interactions";
+import { Message } from "./message-scheduler";
+
+function send(state, content) {
+    return state.res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: content,
+        },
+    });
+}
+
+export function schedule_message(state, message, channel, crontab) {
+    const message = Message(message, channel, crontab);
+
+    const schedule_valid = state.schedule.schedule(message);
+
+    return send(
+        state,
+        schedule_valid
+            ? `registered message: "${message}" with cron: "${crontab}" and id: "${message.id}"`
+            : "invalid cron",
+    );
+}
+
+export function unschedule_message(state, id) {
+    const unschedule_valid = state.schedule.unschedule(id);
+
+    return send(
+        state,
+        unschedule_valid ? `stopped job ${id}` : `no such job ${id}`,
+    );
+}
+
+export function pet(state) {
+    return send(state, "[purring noises]");
+}
