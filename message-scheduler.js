@@ -56,7 +56,7 @@ export class MessageSchedule {
                 () => {
                     console.log("test");
                     this.state.client.channels.cache
-                        .get(channel_id)
+                        .get(message.channel_id)
                         .send(message.message);
                     if (!message.repeat) {
                         this.unschedule(message.id);
