@@ -49,7 +49,7 @@ export class MessageSchedule {
             this.jobs[message.id] = message;
 
             this.crons[message.id] = cron.schedule(
-                crontab,
+                message.crontab,
                 () => {
                     this.state.client.channels.cache
                         .get(channel_id)
