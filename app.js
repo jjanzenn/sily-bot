@@ -6,7 +6,7 @@ import {
   InteractionResponseType,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits, ActivityType } from 'discord.js';
 import fs from 'node:fs';
 import { v4 as uuidv4 } from 'uuid';
 
