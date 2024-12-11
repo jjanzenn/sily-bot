@@ -51,6 +51,7 @@ export class MessageSchedule {
             this.crons[message.id] = cron.schedule(
                 message.crontab,
                 () => {
+                    console.log("test");
                     this.state.client.channels.cache
                         .get(channel_id)
                         .send(message.message);
@@ -76,14 +77,12 @@ export class MessageSchedule {
             delete this.jobs[id];
         } else {
             valid = false;
-            console.log(`failed to delete message: ${id}`);
         }
         if (id in this.crons) {
             this.crons[id].stop();
             delete this.crons[id];
         } else {
             valid = false;
-            console.log(`failed to delete cron job: ${id}`);
         }
 
         this.save();
