@@ -1,5 +1,5 @@
 import { InteractionResponseType } from "discord-interactions";
-import { Message } from "./message-scheduler";
+import { Message } from "./message-scheduler.js";
 
 function send(state, content) {
     return state.res.send({
