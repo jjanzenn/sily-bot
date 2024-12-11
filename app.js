@@ -40,7 +40,7 @@ function handle_application_command(state, data) {
 }
 
 function main() {
-    const state = State();
+    const state = new State();
 
     state.client.on("ready", () => {
         console.log(`Logged in as ${state.client.user.tag}!`);
