@@ -48,9 +48,10 @@ export class MessageSchedule {
         if (valid) {
             this.jobs[message.id] = message;
 
-            this.state.client.channels.cache
-                .get(message.channel_id)
-                .send(message.message);
+            console.log(
+                this.state.client.channels.cache.get(message.channel_id),
+            );
+
             this.crons[message.id] = cron.schedule(
                 message.crontab,
                 () => {
