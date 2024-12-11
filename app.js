@@ -7,6 +7,7 @@ import {
 } from "discord-interactions";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
 import { pet, schedule_message, unschedule_message } from "./command_impls.js";
+import { MessageSchedule } from "./message-scheduler.js";
 
 class State {
     constructor() {
@@ -44,7 +45,7 @@ function main() {
 
     state.client.on("ready", () => {
         console.log(`Logged in as ${state.client.user.tag}!`);
-        state.schedule = MessageSchedule(state);
+        state.schedule = new MessageSchedule(state);
         state.client.user.setPresence({
             activities: [
                 {
