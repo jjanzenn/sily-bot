@@ -29,7 +29,7 @@ client.on('ready', () => {
     });
     client.user.setPresence({
         activities: [{
-            name: 'sily'
+            name: 'sily',
             type: ActivityType.Playing,
         }],
         status: "idle"
