@@ -63,7 +63,6 @@ export class MessageSchedule {
                     timezone: process.env.TIMEZONE,
                 },
             );
-            this.crons[message.id] = "test";
 
             this.save();
         }
