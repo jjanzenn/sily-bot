@@ -21,8 +21,18 @@ client.on('ready', () => {
         Object.keys(jobs).forEach((job) => {
             job_crons[job] = cron.schedule(jobs[job].crontab, () => {
                 client.channels.cache.get(jobs[job].channel_id).send(jobs[job].message);
+            }, {
+                scheduled: true,
+                timezone: process.env.TIMEZONE
             });
         });
+    });
+    client.user.setPresence({
+        activities: [{
+            name: 'sily'
+            type: ActivityType.Playing,
+        }],
+        status: "idle"
     });
 });
 
@@ -57,6 +67,9 @@ app.post('/', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, 
               };
               job_crons[id] = cron.schedule(crontab, () => {
                   client.channels.cache.get(req.body.channel_id).send(message);
+              }, {
+                  scheduled: true,
+                  timezone: process.env.TIMEZONE
               });
 
               const json = JSON.stringify(jobs);
