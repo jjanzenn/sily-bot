@@ -16,8 +16,8 @@ class State {
     }
 }
 
-function handle_application_command(state, data) {
-    const { name, options, channel_id } = data;
+function handle_application_command(state, data, channel_id) {
+    const { name, options } = data;
 
     switch (name) {
         case "schedule_message":
@@ -66,14 +66,14 @@ function main() {
         "/",
         verifyKeyMiddleware(process.env.PUBLIC_KEY),
         async (req, res) => {
-            const { type, data } = req.body;
+            const { type, data, channel_id } = req.body;
 
             state.res = res;
             switch (type) {
                 case InteractionType.PING:
                     return res.send({ type: InteractionResponseType.PONG });
                 case InteractionType.APPLICATION_COMMAND:
-                    return handle_application_command(state, data);
+                    return handle_application_command(state, data, channel_id);
                 default:
                     console.error("unknown interaction type", type);
                     return res
