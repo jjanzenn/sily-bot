@@ -48,6 +48,7 @@ export class MessageSchedule {
         if (valid) {
             this.jobs[message.id] = message;
 
+            console.log(message.channel_id);
             console.log(
                 this.state.client.channels.cache.get(message.channel_id),
             );
