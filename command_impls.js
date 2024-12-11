@@ -11,7 +11,7 @@ function send(state, content) {
 }
 
 export function schedule_message(state, msg, channel, crontab) {
-    const message = Message(msg, channel, crontab);
+    const message = new Message(msg, channel, crontab);
 
     const schedule_valid = state.schedule.schedule(message);
 
