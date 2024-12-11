@@ -74,11 +74,17 @@ export class MessageSchedule {
         var valid = true;
         if (id in this.jobs) {
             delete this.jobs[id];
-        } else valid = false;
+        } else {
+            valid = false;
+            console.log(`failed to delete message: ${id}`);
+        }
         if (id in this.crons) {
             this.crons[id].stop();
             delete this.crons[id];
-        } else valid = false;
+        } else {
+            valid = false;
+            console.log(`failed to delete cron job: ${id}`);
+        }
 
         this.save();
 
