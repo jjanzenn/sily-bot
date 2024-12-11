@@ -64,7 +64,7 @@ export class MessageSchedule {
                 },
             );
 
-            save();
+            this.save();
         }
 
         return valid;
@@ -80,7 +80,7 @@ export class MessageSchedule {
             delete this.crons[id];
         } else valid = false;
 
-        save();
+        this.save();
 
         return valid;
     }
