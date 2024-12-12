@@ -2,6 +2,7 @@ import "dotenv/config";
 import cron from "node-cron";
 import { v4 as uuidv4 } from "uuid";
 import fs from "node:fs";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 export class Message {
     constructor(message, channel_id, crontab, repeat = true, id = null) {
@@ -49,12 +50,22 @@ export class MessageSchedule {
         if (valid) {
             this.jobs[message.id] = message;
 
+            const stop = new ButtonBuilder()
+                .setCustomId(`stop-${message.id}`)
+                .setLabel("Stop")
+                .setStyle(ButtonStyle.Danger);
+
             this.crons[message.id] = cron.schedule(
                 message.crontab,
                 () => {
                     this.state.client.channels.cache
                         .get(message.channel_id)
-                        .send(message.message);
+                        .send({
+                            content: message.message,
+                            components: [
+                                new ActionRowBuilder().addComponents(stop),
+                            ],
+                        });
                     if (!message.repeat) {
                         this.unschedule(message.id);
                     }

@@ -6,13 +6,7 @@ import {
     verifyKeyMiddleware,
 } from "discord-interactions";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
-import {
-    blep,
-    help,
-    pet,
-    schedule_message,
-    unschedule_message,
-} from "./command_impls.js";
+import { blep, help, pet, schedule_message } from "./command_impls.js";
 import { MessageSchedule } from "./message-scheduler.js";
 
 class State {
@@ -34,9 +28,6 @@ function handle_application_command(state, data, channel_id) {
                 options[1].value,
             );
 
-        case "unschedule_message":
-            return unschedule_message(state, options[0].value);
-
         case "pet":
             return pet(state);
 
@@ -50,6 +41,20 @@ function handle_application_command(state, data, channel_id) {
             console.error(`unknown command: ${name}`);
             return res.status(400).json({ error: "unknown command" });
     }
+}
+
+function handle_button_press(state, data) {
+    if (data.custom_id.startsWith("stop-")) {
+        state.schedule.unschedule(data.custom_id.slice(5));
+
+        return state.res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+                content: "no longer sending this message",
+            },
+        });
+    }
+    return res.status(400).json({ error: "unknown command" });
 }
 
 function main() {
@@ -86,6 +91,8 @@ function main() {
                     return res.send({ type: InteractionResponseType.PONG });
                 case InteractionType.APPLICATION_COMMAND:
                     return handle_application_command(state, data, channel_id);
+                case InteractionType.MESSAGE_COMPONENT:
+                    return handle_button_press(state, data);
                 default:
                     console.error("unknown interaction type", type);
                     return res

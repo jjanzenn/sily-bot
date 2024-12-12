@@ -45,21 +45,6 @@ const commands = [
         integration_types: [0],
         contexts: [0],
     },
-    {
-        name: "unschedule_message",
-        description: "Stop sending a scheduled message",
-        type: 1,
-        options: [
-            {
-                type: 3,
-                name: "id",
-                description: "the id of the message to stop",
-                required: true,
-            },
-        ],
-        integration_types: [0],
-        contexts: [0],
-    },
 ];
 
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
