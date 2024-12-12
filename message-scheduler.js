@@ -2,7 +2,7 @@ import "dotenv/config";
 import cron from "node-cron";
 import { v4 as uuidv4 } from "uuid";
 import fs from "node:fs";
-import { ActionRowBuilder, ButtonBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 export class Message {
     constructor(message, channel_id, crontab, repeat = true, id = null) {
