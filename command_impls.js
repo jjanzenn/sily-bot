@@ -27,14 +27,6 @@ export function schedule_message(state, msg, channel, crontab) {
     });
 }
 
-export function unschedule_message(state, id) {
-    const unschedule_valid = state.schedule.unschedule(id);
-
-    return send(state, {
-        content: unschedule_valid ? `stopped job ${id}` : `no such job ${id}`,
-    });
-}
-
 export function pet(state) {
     return send(state, { content: "[purring noises]" });
 }
@@ -46,11 +38,10 @@ Here are the available commands and their descriptions:
 - \`/blep\`  blep.
 - \`/help\`  Show this message.
 - \`/pet\`  You can pet sily-bot.
-- \`/schedule-message <message> <cron>\`  Schedule a message to be send later. Works like Linux cron jobs in the format second minute hour day month weekday. Put the number (or name of month or weekday) in each spot. If you want it to run every second, minute, etc. instead of once when it reaches the provided number, use a \`*\` instead of a number. For instance, to run a job every minute on January 4th, you might use \`0 * * 4 January *\`. The bot replies with a UUID that can be used to cancel the cron job later.
-- \`/unschedule-message <id>\`  Stop sending a message with the given id.`,
+- \`/schedule-message <message> <cron>\`  Schedule a message to be send later. Works like Linux cron jobs in the format second minute hour day month weekday. Put the number (or name of month or weekday) in each spot. If you want it to run every second, minute, etc. instead of once when it reaches the provided number, use a \`*\` instead of a number. For instance, to run a job every minute on January 4th, you might use \`0 * * 4 January *\`.
     });
 }
 
 export function blep(state) {
-    return send(state, `≽^•𐃷•^≼`);
+    return send(state, "≽^•𐃷•^≼");
 }

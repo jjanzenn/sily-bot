@@ -6,13 +6,7 @@ import {
     verifyKeyMiddleware,
 } from "discord-interactions";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
-import {
-    blep,
-    help,
-    pet,
-    schedule_message,
-    unschedule_message,
-} from "./command_impls.js";
+import { blep, help, pet, schedule_message } from "./command_impls.js";
 import { MessageSchedule } from "./message-scheduler.js";
 
 class State {
@@ -33,9 +27,6 @@ function handle_application_command(state, data, channel_id) {
                 channel_id,
                 options[1].value,
             );
-
-        case "unschedule_message":
-            return unschedule_message(state, options[0].value);
 
         case "pet":
             return pet(state);
