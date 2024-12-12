@@ -4,6 +4,13 @@ import { REST, Routes } from "discord.js";
 
 const commands = [
     {
+        name: "blep",
+        description: "blep",
+        type: 1,
+        integration_types: [0],
+        contexts: [0],
+    },
+    {
         name: "help",
         description: "get help",
         type: 1,
