@@ -52,7 +52,7 @@ export class MessageSchedule {
 
             const stop = new ButtonBuilder()
                 .setCustomId(`stop-${message.id}`)
-                .setLabel("Stop sending this message")
+                .setLabel("Stop")
                 .setStyle(ButtonStyle.Danger);
 
             this.crons[message.id] = cron.schedule(
