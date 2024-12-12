@@ -2,6 +2,7 @@ import "dotenv/config";
 import cron from "node-cron";
 import { v4 as uuidv4 } from "uuid";
 import fs from "node:fs";
+import { ActionRowBuilder } from "discord.js";
 
 export class Message {
     constructor(message, channel_id, crontab, repeat = true, id = null) {
@@ -49,6 +50,22 @@ export class MessageSchedule {
         if (valid) {
             this.jobs[message.id] = message;
 
+            const confirm = new ButtonBuilder()
+                .setCustomId("confirm")
+                .setLabel("Confirm Ban")
+                .setStyle(ButtonStyle.Danger);
+
+            const cancel = new ButtonBuilder()
+                .setCustomId("cancel")
+                .setLabel("Cancel")
+                .setStyle(ButtonStyle.Secondary);
+
+            this.state.client.channels.cache.get(message.channel_id).send({
+                content: "Hello",
+                components: [
+                    new ActionRowBuilder().addComponents(confirm, cancel),
+                ],
+            });
             this.crons[message.id] = cron.schedule(
                 message.crontab,
                 () => {
