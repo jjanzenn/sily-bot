@@ -52,6 +52,12 @@ function handle_application_command(state, data, channel_id) {
     }
 }
 
+function handle_button_press(state, data) {
+    if (data.custom_id.startsWith("stop-")) {
+        state.schedule.unschedule(data.custom_id.slice(5));
+    }
+}
+
 function main() {
     const state = new State();
 
@@ -87,7 +93,7 @@ function main() {
                 case InteractionType.APPLICATION_COMMAND:
                     return handle_application_command(state, data, channel_id);
                 case InteractionType.MESSAGE_COMPONENT:
-                    console.log(req.body);
+                    handle_button_press(state, data);
                 default:
                     console.error("unknown interaction type", type);
                     return res
