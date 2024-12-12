@@ -86,6 +86,8 @@ function main() {
                     return res.send({ type: InteractionResponseType.PONG });
                 case InteractionType.APPLICATION_COMMAND:
                     return handle_application_command(state, data, channel_id);
+                case InteractionType.MESSAGE_COMPONENT:
+                    console.log(req.body);
                 default:
                     console.error("unknown interaction type", type);
                     return res
