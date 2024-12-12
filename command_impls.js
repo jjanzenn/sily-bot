@@ -43,5 +43,8 @@ Here are the available commands and their descriptions:
 }
 
 export function blep(state) {
-    return send(state, "≽^•𐃷•^≼");
+    return send(
+        state,
+        "https://cdn.discordapp.com/app-icons/1314742798888472687/9f31a290c4c52f7eff54efd01112ab0b.png?size=512",
+    );
 }
