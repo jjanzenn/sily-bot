@@ -1,130 +1,91 @@
-import 'dotenv/config';
-import express from 'express';
-import cron from 'node-cron';
+import "dotenv/config";
+import express from "express";
 import {
-  InteractionType,
-  InteractionResponseType,
-  verifyKeyMiddleware,
-} from 'discord-interactions';
-import { Client, GatewayIntentBits, ActivityType } from 'discord.js';
-import fs from 'node:fs';
-import { v4 as uuidv4 } from 'uuid';
+    InteractionType,
+    InteractionResponseType,
+    verifyKeyMiddleware,
+} from "discord-interactions";
+import { Client, GatewayIntentBits, ActivityType } from "discord.js";
+import { pet, schedule_message, unschedule_message } from "./command_impls.js";
+import { MessageSchedule } from "./message-scheduler.js";
 
-const client = new Client ({ intents: [GatewayIntentBits.Guilds] });
-var jobs = {};
-const job_crons = {};
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-    fs.readFile('jobs.json', 'utf8', (err,data) => {
-        jobs = err ? {} : JSON.parse(data);
+class State {
+    constructor() {
+        this.job_db = "jobs.json";
+        this.client = new Client({ intents: [GatewayIntentBits.Guilds] });
+    }
+}
 
-        Object.keys(jobs).forEach((job) => {
-            job_crons[job] = cron.schedule(jobs[job].crontab, () => {
-                client.channels.cache.get(jobs[job].channel_id).send(jobs[job].message);
-            }, {
-                scheduled: true,
-                timezone: process.env.TIMEZONE
-            });
+function handle_application_command(state, data, channel_id) {
+    const { name, options } = data;
+
+    switch (name) {
+        case "schedule_message":
+            return schedule_message(
+                state,
+                options[0].value,
+                channel_id,
+                options[1].value,
+            );
+
+        case "unschedule_message":
+            return unschedule_message(state, options[0].value);
+
+        case "pet":
+            return pet(state);
+
+        default:
+            console.error(`unknown command: ${name}`);
+            return res.status(400).json({ error: "unknown command" });
+    }
+}
+
+function main() {
+    const state = new State();
+
+    state.client.on("ready", () => {
+        console.log(`Logged in as ${state.client.user.tag}!`);
+        state.schedule = new MessageSchedule(state);
+        state.client.user.setPresence({
+            activities: [
+                {
+                    name: "sily",
+                    type: ActivityType.Playing,
+                },
+            ],
+            status: "idle",
         });
     });
-    client.user.setPresence({
-        activities: [{
-            name: 'sily',
-            type: ActivityType.Playing,
-        }],
-        status: "idle"
+
+    state.client.login(process.env.DISCORD_TOKEN);
+
+    const app = express();
+    const PORT = process.env.PORT || 3000;
+
+    app.post(
+        "/",
+        verifyKeyMiddleware(process.env.PUBLIC_KEY),
+        async (req, res) => {
+            const { type, data, channel_id } = req.body;
+
+            state.res = res;
+            switch (type) {
+                case InteractionType.PING:
+                    return res.send({ type: InteractionResponseType.PONG });
+                case InteractionType.APPLICATION_COMMAND:
+                    return handle_application_command(state, data, channel_id);
+                default:
+                    console.error("unknown interaction type", type);
+                    return res
+                        .status(400)
+                        .json({ error: "unknown interaction type" });
+            }
+        },
+    );
+
+    app.listen(PORT, () => {
+        console.log("Listening on port", PORT);
     });
-});
+}
 
-client.login(process.env.DISCORD_TOKEN);
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.post('/', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
-  const { type, data } = req.body;
-
-  if (type === InteractionType.PING) {
-    return res.send({ type: InteractionResponseType.PONG });
-  }
-
-  if (type === InteractionType.APPLICATION_COMMAND) {
-      const { name, options, guild_id } = data;
-
-      if (name === 'schedule_message') {
-          const message = options[0].value;
-          const crontab = options[1].value;
-          const valid = cron.validate(crontab);
-          const id = uuidv4();
-
-          const content = valid ? `registered message: "${message}" with cron: "${crontab}" and id: "${id}"` : 'invalid cron';
-
-          if (valid) {
-              jobs[id] = {
-                  message: message,
-                  crontab: crontab,
-                  channel_id: req.body.channel_id,
-              };
-              job_crons[id] = cron.schedule(crontab, () => {
-                  client.channels.cache.get(req.body.channel_id).send(message);
-              }, {
-                  scheduled: true,
-                  timezone: process.env.TIMEZONE
-              });
-
-              const json = JSON.stringify(jobs);
-              fs.writeFile('jobs.json', json, 'utf8', err => {
-                  if (err) {
-                      console.error(err);
-                  }
-              });
-           }
-
-          return res.send({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              data: {
-                  content: content,
-              },
-          });
-      } else if (name === 'unschedule_message') {
-          const id = options[0].value;
-          const content = id in jobs ? `stopped job ${id}` : `no such job ${id}`;
-          if (id in jobs) {
-              job_crons[id].stop();
-              delete jobs[id]
-              delete job_crons[id];
-
-              const json = JSON.stringify(jobs);
-              fs.writeFile('jobs.json', json, 'utf8', err => {
-                  if (err) {
-                      console.error(err);
-                  }
-              });
-          }
-
-          return res.send({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              data: {
-                  content: content,
-              },
-          });
-      } else if (name === 'pet') {
-          return res.send({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              data: {
-                  content: '[purring noises]',
-              },
-          });
-      }
-
-    console.error(`unknown command: ${name}`);
-    return res.status(400).json({ error: 'unknown command' });
-  }
-
-  console.error('unknown interaction type', type);
-  return res.status(400).json({ error: 'unknown interaction type' });
-});
-
-app.listen(PORT, () => {
-  console.log('Listening on port', PORT);
-});
+main();
