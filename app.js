@@ -55,7 +55,15 @@ function handle_application_command(state, data, channel_id) {
 function handle_button_press(state, data) {
     if (data.custom_id.startsWith("stop-")) {
         state.schedule.unschedule(data.custom_id.slice(5));
+
+        return state.res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+                content: "no longer sending this message",
+            },
+        });
     }
+    return res.status(400).json({ error: "unknown command" });
 }
 
 function main() {
@@ -93,7 +101,7 @@ function main() {
                 case InteractionType.APPLICATION_COMMAND:
                     return handle_application_command(state, data, channel_id);
                 case InteractionType.MESSAGE_COMPONENT:
-                    handle_button_press(state, data);
+                    return handle_button_press(state, data);
                 default:
                     console.error("unknown interaction type", type);
                     return res
