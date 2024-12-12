@@ -1,5 +1,5 @@
 import "dotenv/config";
-import cron, { schedule } from "node-cron";
+import cron from "node-cron";
 import { v4 as uuidv4 } from "uuid";
 import fs from "node:fs";
 
@@ -30,8 +30,6 @@ export class MessageSchedule {
                     : true;
                 this.jobs[job].id = job;
                 this.jobs[job].repeat = repeat;
-
-                console.log(this.jobs[job]);
 
                 this.schedule(this.jobs[job]);
             });
