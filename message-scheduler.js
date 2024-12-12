@@ -29,7 +29,7 @@ export class MessageSchedule {
                     ? this.jobs[job].repeat
                     : true;
                 this.jobs[job].id = job;
-                this.jobs[repeat].id = job;
+                this.jobs[job].id = repeat;
 
                 this.schedule(this.jobs[job]);
             });
