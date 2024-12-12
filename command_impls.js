@@ -18,7 +18,7 @@ export function schedule_message(state, msg, channel, crontab) {
     return send(
         state,
         schedule_valid
-            ? `registered message: "${msg}" with cron: "${crontab}" and id: "${message.id}"`
+            ? `registered message: "${msg}" with cron: "${crontab}"`
             : "invalid cron",
     );
 }
