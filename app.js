@@ -6,7 +6,12 @@ import {
     verifyKeyMiddleware,
 } from "discord-interactions";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
-import { pet, schedule_message, unschedule_message } from "./command_impls.js";
+import {
+    help,
+    pet,
+    schedule_message,
+    unschedule_message,
+} from "./command_impls.js";
 import { MessageSchedule } from "./message-scheduler.js";
 
 class State {
@@ -36,7 +41,6 @@ function handle_application_command(state, data, channel_id) {
 
         case "help":
             return help(state);
-
 
         default:
             console.error(`unknown command: ${name}`);
