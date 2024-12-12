@@ -34,6 +34,10 @@ function handle_application_command(state, data, channel_id) {
         case "pet":
             return pet(state);
 
+        case "help":
+            return help(state);
+
+
         default:
             console.error(`unknown command: ${name}`);
             return res.status(400).json({ error: "unknown command" });
