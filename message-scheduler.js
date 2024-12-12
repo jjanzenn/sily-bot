@@ -50,28 +50,22 @@ export class MessageSchedule {
         if (valid) {
             this.jobs[message.id] = message;
 
-            const confirm = new ButtonBuilder()
-                .setCustomId("confirm")
-                .setLabel("Confirm Ban")
+            const stop = new ButtonBuilder()
+                .setCustomId(`stop-${message.id}`)
+                .setLabel("Stop sending this message")
                 .setStyle(ButtonStyle.Danger);
 
-            const cancel = new ButtonBuilder()
-                .setCustomId("cancel")
-                .setLabel("Cancel")
-                .setStyle(ButtonStyle.Secondary);
-
-            this.state.client.channels.cache.get(message.channel_id).send({
-                content: "Hello",
-                components: [
-                    new ActionRowBuilder().addComponents(confirm, cancel),
-                ],
-            });
             this.crons[message.id] = cron.schedule(
                 message.crontab,
                 () => {
                     this.state.client.channels.cache
                         .get(message.channel_id)
-                        .send(message.message);
+                        .send({
+                            content: message.message,
+                            components: [
+                                new ActionRowBuilder().addComponents(stop),
+                            ],
+                        });
                     if (!message.repeat) {
                         this.unschedule(message.id);
                     }
