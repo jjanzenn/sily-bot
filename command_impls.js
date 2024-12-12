@@ -41,8 +41,14 @@ export function help(state) {
         state,
         `Hi, I'm sily-bot!
 Here are the available commands and their descriptions:
+- \`/blep\`  blep.
+- \`/help\`  Show this message.
 - \`/pet\`  You can pet sily-bot.
-- \`/schedule-message <message> <cron>\`  Schedule a message to be send later. Works like Linux cron jobs in the format second minute hour day month weekday. Put the number (or name of month or weekday) in each spot. If you want it to run every second, minute, etc. instead of once when it reaches the provided number, use a * instead of a number. For instance, to run a job every minute on January 4th, you might use 0 * * 4 January *. The bot replies with a UUID that can be used to cancel the cron job later.
+- \`/schedule-message <message> <cron>\`  Schedule a message to be send later. Works like Linux cron jobs in the format second minute hour day month weekday. Put the number (or name of month or weekday) in each spot. If you want it to run every second, minute, etc. instead of once when it reaches the provided number, use a \`*\` instead of a number. For instance, to run a job every minute on January 4th, you might use \`0 * * 4 January *\`. The bot replies with a UUID that can be used to cancel the cron job later.
 - \`/unschedule-message <id>\`  Stop sending a message with the given id.`,
     );
+}
+
+export function blep(state) {
+    return send(state, `≽^•𐃷•^≼`);
 }

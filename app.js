@@ -7,6 +7,7 @@ import {
 } from "discord-interactions";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
 import {
+    blep,
     help,
     pet,
     schedule_message,
@@ -41,6 +42,9 @@ function handle_application_command(state, data, channel_id) {
 
         case "help":
             return help(state);
+
+        case "blep":
+            return blep(state);
 
         default:
             console.error(`unknown command: ${name}`);
