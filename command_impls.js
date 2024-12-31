@@ -37,6 +37,8 @@ export function help(state) {
         content: `Hi, I'm sily-bot!
 Here are the available commands and their descriptions:
 - \`/blep\`  blep.
+- \`/catfact\`  Get a fact about cats.
+- \`/fomx\`  Get an image of a fox.
 - \`/help\`  Show this message.
 - \`/pet\`  You can pet sily-bot.
 - \`/schedule-message <message> <cron>\`  Schedule a message to be send later. Works like Linux cron jobs in the format second minute hour day month weekday. Put the number (or name of month or weekday) in each spot. If you want it to run every second, minute, etc. instead of once when it reaches the provided number, use a \`*\` instead of a number. For instance, to run a job every minute on January 4th, you might use \`0 * * 4 January *\`.`,
