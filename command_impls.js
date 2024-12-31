@@ -1,6 +1,7 @@
 import { InteractionResponseType } from "discord-interactions";
 import { Message } from "./message-scheduler.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { request } from "https";
 
 function send(state, data) {
     return state.res.send({
@@ -44,4 +45,29 @@ Here are the available commands and their descriptions:
 
 export function blep(state) {
     return send(state, { content: "≽^•𐃷•^≼" });
+}
+
+export function catfact(state) {
+    const options = {
+        hostname: "meowfacts.herokuapp.com",
+        path: "/",
+        port: 443,
+        method: "GET",
+    };
+
+    let body = [];
+
+    const req = request(options, (res) => {
+        res.on("data", (chunk) => body.push(chunk));
+        res.on("end", () => {
+            const data = Buffer.concat(body).toString();
+            resolve(data);
+            console.log(data);
+        });
+    });
+    req.on("error", (e) => {
+        console.log(`https error: ${e}`);
+        reject(e);
+    });
+    req.end();
 }
