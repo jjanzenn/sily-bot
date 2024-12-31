@@ -1,7 +1,7 @@
 import { InteractionResponseType } from "discord-interactions";
 import { Message } from "./message-scheduler.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { request } from "https";
+import { get } from "https";
 
 function send(state, data) {
     return state.res.send({
@@ -48,26 +48,11 @@ export function blep(state) {
 }
 
 export function catfact(state) {
-    const options = {
-        hostname: "meowfacts.herokuapp.com",
-        path: "/",
-        port: 443,
-        method: "GET",
-    };
-
-    let body = [];
-
-    const req = request(options, (res) => {
-        res.on("data", (chunk) => body.push(chunk));
-        res.on("end", () => {
-            const data = Buffer.concat(body).toString();
-            resolve(data);
-            console.log(data);
+    get("https://meowfacts.herokuapp.com/", (res) => {
+        res.on("data", (d) => {
+            process.stdout.write(d);
         });
+    }).on("error", (e) => {
+        console.error(e);
     });
-    req.on("error", (e) => {
-        console.log(`https error: ${e}`);
-        reject(e);
-    });
-    req.end();
 }
