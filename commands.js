@@ -32,6 +32,13 @@ const commands = [
         contexts: [0],
     },
     {
+        name: "fomx",
+        description: "get a fomx picture",
+        type: 1,
+        integration_types: [0],
+        contexts: [0],
+    },
+    {
         name: "schedule_message",
         description: "Register a message to run as a cron job",
         type: 1,

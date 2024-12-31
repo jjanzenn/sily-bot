@@ -50,7 +50,6 @@ export function blep(state) {
 export function catfact(state) {
     get("https://meowfacts.herokuapp.com/", (res) => {
         res.on("data", (d) => {
-            process.stdout.write(d);
             const obj = JSON.parse(d);
             const fact = obj.data[0];
             return send(state, { content: fact });
@@ -58,5 +57,18 @@ export function catfact(state) {
     }).on("error", (e) => {
         console.error(e);
         return send(state, { content: "failed to request fact" });
+    });
+}
+
+export function fomx(state) {
+    get("https://randomfox.ca/floof/", (res) => {
+        res.on("data", (d) => {
+            const obj = JSON.parse(d);
+            const fomx = obj.image;
+            return send(state, { content: fomx });
+        });
+    }).on("error", (e) => {
+        console.error(e);
+        return send(state, { content: "failed to get fomx" });
     });
 }
