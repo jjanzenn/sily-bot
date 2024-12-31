@@ -8,7 +8,7 @@ A bot that automates silliness.
 2. Set your Interactions Endpoint URL here: https://discord.com/developers/applications/<id\>/information
 3. Clone the latest version of `sily-bot` with `git clone https://git.jjanzen.ca/index.cgi/sily-bot.git`
 4. Populate your .env file:
-   ```
+   ```txt
    APP_ID=<APPLICATION ID>
    DISCORD_TOKEN=<TOKEN>
    PUBLIC_KEY=<PUBLIC KEY>
