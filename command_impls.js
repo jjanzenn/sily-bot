@@ -51,8 +51,12 @@ export function catfact(state) {
     get("https://meowfacts.herokuapp.com/", (res) => {
         res.on("data", (d) => {
             process.stdout.write(d);
+            const obj = JSON.parse(d);
+            const fact = obj.data[0];
+            return send(state, { content: fact });
         });
     }).on("error", (e) => {
         console.error(e);
+        return send(state, { content: "failed to request fact" });
     });
 }
