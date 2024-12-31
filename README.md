@@ -7,14 +7,7 @@ A bot that automates silliness.
 1. Create a new bot at https://discord.com/developers/applications/
 2. Set your Interactions Endpoint URL here: https://discord.com/developers/applications/<id\>/information
 3. Clone the latest version of `sily-bot` with `git clone https://git.jjanzen.ca/index.cgi/sily-bot.git`
-4. Populate your .env file:
-```ini
-APP_ID=<APPLICATION ID>
-DISCORD_TOKEN=<TOKEN>
-PUBLIC_KEY=<PUBLIC KEY>
-TIMEZONE=<TIMEZONE>
-PORT=<PORT> # optional
-```
+4. Populate your `.env` file
     * APP_ID and PUBLIC_KEY are found at https://discord.com/developers/applications/<id\>/information
     * DISCORD_TOKEN is found by reseting the token at https://discord.com/developers/applications/<id\>/bot
     * TIMEZONE is base on the [IANA time zone database](https://www.iana.org/time-zones) e.g. `America/Winnipeg`
@@ -22,6 +15,15 @@ PORT=<PORT> # optional
 5. Install dependencies with `npm install`
 6. Register the bot commands with `npm run register`
 7. Run the bot with `npm run start`
+
+The `.env` file is formatted as:
+```ini
+APP_ID=<APPLICATION ID>
+DISCORD_TOKEN=<TOKEN>
+PUBLIC_KEY=<PUBLIC KEY>
+TIMEZONE=<TIMEZONE>
+PORT=<PORT> # optional
+```
 
 ### Note on accessing the bot
 
