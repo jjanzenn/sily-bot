@@ -6,7 +6,7 @@ import {
     verifyKeyMiddleware,
 } from "discord-interactions";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
-import { blep, help, pet, schedule_message } from "./command_impls.js";
+import { blep, help, pet, schedule_message, catfact } from "./command_impls.js";
 import { MessageSchedule } from "./message-scheduler.js";
 
 class State {
