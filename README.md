@@ -8,13 +8,13 @@ A bot that automates silliness.
 2. Set your Interactions Endpoint URL here: https://discord.com/developers/applications/<id\>/information
 3. Clone the latest version of `sily-bot` with `git clone https://git.jjanzen.ca/index.cgi/sily-bot.git`
 4. Populate your .env file:
-   ```xml
-   APP_ID=<APPLICATION ID>
-   DISCORD_TOKEN=<TOKEN>
-   PUBLIC_KEY=<PUBLIC KEY>
-   TIMEZONE=<TIMEZONE>
-   PORT=<PORT> # optional
-   ```
+```ini
+APP_ID=<APPLICATION ID>
+DISCORD_TOKEN=<TOKEN>
+PUBLIC_KEY=<PUBLIC KEY>
+TIMEZONE=<TIMEZONE>
+PORT=<PORT> # optional
+```
     * APP_ID and PUBLIC_KEY are found at https://discord.com/developers/applications/<id\>/information
     * DISCORD_TOKEN is found by reseting the token at https://discord.com/developers/applications/<id\>/bot
     * TIMEZONE is base on the [IANA time zone database](https://www.iana.org/time-zones) e.g. `America/Winnipeg`
