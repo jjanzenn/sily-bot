@@ -75,7 +75,8 @@ export function fomx(state) {
     });
 }
 
-export function factcheck(state, truth) {
+export function factcheck(state) {
+    const truth = Math.random() > 0.5 ? true : false;
     if (truth)
         return send(state, {
             content: "https://jjanzen.ca/images/true-boar.png",
