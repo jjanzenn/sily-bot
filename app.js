@@ -13,6 +13,7 @@ import {
     schedule_message,
     catfact,
     fomx,
+    factcheck,
 } from "./command_impls.js";
 import { MessageSchedule } from "./message-scheduler.js";
 
@@ -49,6 +50,10 @@ function handle_application_command(state, data, channel_id) {
 
         case "fomx":
             return fomx(state);
+
+        case "factcheck":
+            if (options.length >= 1) return factcheck(state, options[0].value);
+            else return factcheck(state, True);
 
         default:
             console.error(`unknown command: ${name}`);

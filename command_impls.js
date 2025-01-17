@@ -74,3 +74,8 @@ export function fomx(state) {
         return send(state, { content: "failed to get fomx" });
     });
 }
+
+export function factcheck(state, truth) {
+    if (truth) return send(state, { content: "true" });
+    else return send(state, { content: "false" });
+}
