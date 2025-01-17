@@ -54,7 +54,7 @@ function handle_application_command(state, data, channel_id) {
         case "factcheck":
             if (options && options.length >= 1)
                 return factcheck(state, options[0].value);
-            else return factcheck(state, True);
+            else return factcheck(state, true);
 
         default:
             console.error(`unknown command: ${name}`);
