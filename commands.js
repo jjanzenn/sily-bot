@@ -39,6 +39,21 @@ const commands = [
         contexts: [0],
     },
     {
+        name: "factcheck",
+        description: "check a fact",
+        type: 1,
+        options: [
+            {
+                type: 5,
+                name: "true",
+                description: "truth value of fact check",
+                required: false,
+            },
+        ],
+        integration_types: [0],
+        contexts: [0],
+    },
+    {
         name: "schedule_message",
         description: "Register a message to run as a cron job",
         type: 1,
