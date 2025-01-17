@@ -76,6 +76,12 @@ export function fomx(state) {
 }
 
 export function factcheck(state, truth) {
-    if (truth) return send(state, { content: "true" });
-    else return send(state, { content: "false" });
+    if (truth)
+        return send(state, {
+            content: "https://jjanzen.ca/images/true-boar.png",
+        });
+    else
+        return send(state, {
+            content: "https://jjanzen.ca/images/false-boar.png",
+        });
 }
