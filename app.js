@@ -52,8 +52,7 @@ function handle_application_command(state, data, channel_id) {
 
         default:
             console.error(`unknown command: ${name}`);
-            if (res) return res.status(400).json({ error: "unknown command" });
-            else return null;
+            return state.res.status(400).json({ error: "unknown command" });
     }
 }
 
