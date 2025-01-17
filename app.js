@@ -52,7 +52,8 @@ function handle_application_command(state, data, channel_id) {
             return fomx(state);
 
         case "factcheck":
-            if (options.length >= 1) return factcheck(state, options[0].value);
+            if (options && options.length >= 1)
+                return factcheck(state, options[0].value);
             else return factcheck(state, True);
 
         default:
