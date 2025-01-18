@@ -38,6 +38,7 @@ export function help(state) {
 Here are the available commands and their descriptions:
 - \`/blep\`  blep.
 - \`/catfact\`  Get a fact about cats.
+- \`/factcheck\`  Commune with the sacred boar at the centre of the world to check a fact.
 - \`/fomx\`  Get an image of a fox.
 - \`/help\`  Show this message.
 - \`/pet\`  You can pet sily-bot.

@@ -46,6 +46,7 @@ This bot requires that there be a publicly accessible interactions endpoint URL.
 |---|---|
 |`/blep`|blep.|
 |`/catfact`|Get a fact about cats|
+|`/factcheck`|Commune with the sacred boar at the centre of the world to check a fact|
 |`/fomx`|Get an image of a fox|
 |`/help`|Show a help message|
 |`/pet`|You can pet sily-bot.|
