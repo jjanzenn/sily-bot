@@ -50,4 +50,4 @@ This bot requires that there be a publicly accessible interactions endpoint URL.
 |`/fomx`|Get an image of a fox|
 |`/help`|Show a help message|
 |`/pet`|You can pet sily-bot.|
-|`/schedule-message <message> <cron>`|Schedule a message to be send later. Works like Linux cron jobs in the format `second minute hour day month weekday`. Put the number (or name of month or weekday) in each spot. If you want it to run every second, minute, etc. instead of once when it reaches the provided number, use a `*` instead of a number. For instance, to run a job every minute on January 4th, you might use `0 * * 4 January *`.|
+|`/schedule-message <message> <cron>`|Schedule a message to be sent later. Works like Linux cron jobs in the format `second minute hour day month weekday`. Put the number (or name of month or weekday) in each spot. If you want it to run every second, minute, etc. instead of once when it reaches the provided number, use a `*` instead of a number. For instance, to run a job every minute on January 4th, you might use `0 * * 4 January *`.|
