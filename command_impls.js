@@ -78,16 +78,24 @@ export function fomx(state) {
 
 export function factcheck(state) {
     const num = Math.random();
-    if (num > 0.525)
+    if (num < 0.01)
+        return send(state, {
+            content: "https://jjanzen.ca/images/ultra-rare-boar.gif",
+        });
+    else if (num < 0.475)
         return send(state, {
             content: "https://jjanzen.ca/images/true-boar.png",
         });
-    else if (num < 0.475)
+    else if (num < 0.525)
+        return send(state, {
+            content: "https://jjanzen.ca/images/idk-boar.png",
+        });
+    else if (num < 0.99)
         return send(state, {
             content: "https://jjanzen.ca/images/false-boar.png",
         });
     else
         return send(state, {
-            content: "https://jjanzen.ca/images/idk-boar.png",
+            content: "https://jjanzen.ca/images/ultra-rare-false-boar.gif",
         });
 }
