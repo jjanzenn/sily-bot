@@ -78,11 +78,11 @@ export function fomx(state) {
 
 export function factcheck(state) {
     const num = Math.random();
-    if (num > 0.55)
+    if (num > 0.525)
         return send(state, {
             content: "https://jjanzen.ca/images/true-boar.png",
         });
-    else if (num < 0.45)
+    else if (num < 0.475)
         return send(state, {
             content: "https://jjanzen.ca/images/false-boar.png",
         });
